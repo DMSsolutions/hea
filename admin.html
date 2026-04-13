@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Administration — HEA</title>
+    <link rel="icon" href="./image hea/LOGO.webp" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      .admin-layout {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--line);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="glow"></div>
+    <div class="grain"></div>
+
+    <div id="login-screen" class="admin-login">
+      <img src="./image hea/LOGO.webp" alt="HEA" width="80" />
+      <h2>Accès Restreint</h2>
+      <form id="login-form" style="display: flex; gap: 10px;">
+        <input type="password" id="password" class="input" placeholder="Mot de passe" required />
+        <button type="submit" class="btn btn--primary">Entrer</button>
+      </form>
+    </div>
+
+    <div id="admin-panel" class="admin-panel">
+      <div class="admin-layout">
+        <div class="admin-header">
+          <h2>Panel d'Administration HEA</h2>
+          <a href="./index.html" class="btn btn--secondary">Retour au site</a>
+        </div>
+
+        <section class="admin-section">
+          <h2>Gérer les Camps</h2>
+          <p style="color: var(--muted); margin-bottom: 20px; font-size: 14px;">Ajoute ou supprime des camps d'entraînement. Ils s'afficheront sur la page Camps.</p>
+          
+          <form id="add-camp-form" class="form">
+            <div class="form__row">
+              <label class="form__label">Titre du camp</label>
+              <input type="text" id="camp-title" class="input" required placeholder="Ex: Combine Prep Camp" />
+            </div>
+            <div class="form__row">
+              <label class="form__label">Dates</label>
+              <input type="text" id="camp-date" class="input" required placeholder="Ex: 10 - 12 Septembre 2024" />
+            </div>
+            <div class="form__row">
+              <label class="form__label">Places restantes</label>
+              <input type="number" id="camp-spots" class="input" required placeholder="Ex: 5" min="0" />
+            </div>
+            <div class="form__row">
+              <label class="form__label">Description</label>
+              <textarea id="camp-info" class="input textarea" rows="3" required placeholder="Informations sur le camp..."></textarea>
+            </div>
+            <button type="submit" class="admin-btn admin-btn--add">Ajouter le camp</button>
+          </form>
+
+          <div id="admin-camps-list" class="admin-list"></div>
+        </section>
+
+        <section class="admin-section">
+          <h2>Gérer les Coachs</h2>
+          <p style="color: var(--muted); margin-bottom: 20px; font-size: 14px;">Ajoute les profils des coachs pour la page Coaching.</p>
+          
+          <form id="add-coach-form" class="form">
+            <div class="form__row">
+              <label class="form__label">Nom</label>
+              <input type="text" id="coach-name" class="input" required placeholder="Ex: Coach Alpha" />
+            </div>
+            <div class="form__row">
+              <label class="form__label">Rôle</label>
+              <input type="text" id="coach-role" class="input" required placeholder="Ex: Coordinateur Défensif" />
+            </div>
+            <div class="form__row">
+              <label class="form__label">URL de la photo</label>
+              <input type="text" id="coach-img" class="input" required placeholder="Ex: ./image hea/photo.jpg" />
+            </div>
+            <div class="form__row">
+              <label class="form__label">Bio</label>
+              <textarea id="coach-bio" class="input textarea" rows="3" required placeholder="Courte biographie..."></textarea>
+            </div>
+            <button type="submit" class="admin-btn admin-btn--add">Ajouter le coach</button>
+          </form>
+
+          <div id="admin-coaches-list" class="admin-list"></div>
+        </section>
+
+        <section class="admin-section">
+          <h2>Gérer la Galerie Photos</h2>
+          <p style="color: var(--muted); margin-bottom: 20px; font-size: 14px;">Ajoute des liens vers les photos pour la page Galerie.</p>
+          
+          <form id="add-photo-form" class="form" style="display: flex; gap: 10px; align-items: flex-end;">
+            <div class="form__row" style="flex: 1; margin: 0;">
+              <label class="form__label">URL de l'image</label>
+              <input type="text" id="photo-url" class="input" required placeholder="Ex: ./image hea/photo.jpg" />
+            </div>
+            <button type="submit" class="admin-btn admin-btn--add" style="margin: 0;">Ajouter</button>
+          </form>
+
+          <div id="admin-photos-list" class="admin-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px;"></div>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="./data.js"></script>
+    <script>
+      const canEnter = (() => {
+        try {
+          const session = sessionStorage.getItem("hea_admin_entry") === "1";
+          const t = Number(localStorage.getItem("hea_admin_entry") || "0");
+          const fresh = t && Date.now() - t < 2 * 60 * 60 * 1000;
+          return session || fresh;
+        } catch {
+          return false;
+        }
+      })();
+
+      if (!canEnter) {
+        window.location.replace("./index.html");
+      }
+
+      document.getElementById('login-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const pwd = document.getElementById('password').value;
+        if (pwd === 'admin') {
+          document.getElementById('login-screen').style.display = 'none';
+          document.getElementById('admin-panel').classList.add('is-visible');
+          renderAdmin();
+        } else {
+          alert('Mot de passe incorrect.');
+        }
+      });
+
+      const renderAdmin = () => {
+        const data = loadData();
+
+        const campsList = document.getElementById('admin-camps-list');
+        campsList.innerHTML = data.camps.map(c => `
+          <div class="admin-item">
+            <div>
+              <strong>${c.title}</strong>
+              <div style="font-size: 13px; color: var(--muted);">${c.date} • ${c.spots} places</div>
+            </div>
+            <button class="admin-btn" onclick="deleteCamp(${c.id})">Supprimer</button>
+          </div>
+        `).join('');
+
+        const coachesList = document.getElementById('admin-coaches-list');
+        coachesList.innerHTML = data.coaches.map(c => `
+          <div class="admin-item">
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <img src="${c.image}" class="admin-img-preview" />
+              <div>
+                <strong>${c.name}</strong>
+                <div style="font-size: 13px; color: var(--muted);">${c.role}</div>
+              </div>
+            </div>
+            <button class="admin-btn" onclick="deleteCoach(${c.id})">Supprimer</button>
+          </div>
+        `).join('');
+
+        const photosList = document.getElementById('admin-photos-list');
+        photosList.innerHTML = data.photos.map((url, idx) => `
+          <div class="admin-item" style="flex-direction: column; gap: 8px; padding: 8px;">
+            <img src="${url}" class="admin-img-preview" style="width: 100%; height: 100px;" />
+            <button class="admin-btn" style="width: 100%;" onclick="deletePhoto(${idx})">Retirer</button>
+          </div>
+        `).join('');
+      };
+
+      document.getElementById('add-camp-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const data = loadData();
+        const newCamp = {
+          id: Date.now(),
+          title: document.getElementById('camp-title').value,
+          date: document.getElementById('camp-date').value,
+          spots: document.getElementById('camp-spots').value,
+          info: document.getElementById('camp-info').value
+        };
+        data.camps.push(newCamp);
+        localStorage.setItem('hea_camps', JSON.stringify(data.camps));
+        e.target.reset();
+        renderAdmin();
+      });
+
+      document.getElementById('add-coach-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const data = loadData();
+        const newCoach = {
+          id: Date.now(),
+          name: document.getElementById('coach-name').value,
+          role: document.getElementById('coach-role').value,
+          image: document.getElementById('coach-img').value,
+          bio: document.getElementById('coach-bio').value
+        };
+        data.coaches.push(newCoach);
+        localStorage.setItem('hea_coaches', JSON.stringify(data.coaches));
+        e.target.reset();
+        renderAdmin();
+      });
+
+      document.getElementById('add-photo-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const data = loadData();
+        data.photos.push(document.getElementById('photo-url').value);
+        localStorage.setItem('hea_photos', JSON.stringify(data.photos));
+        e.target.reset();
+        renderAdmin();
+      });
+
+      window.deleteCamp = (id) => {
+        const data = loadData();
+        const updated = data.camps.filter(c => c.id !== id);
+        localStorage.setItem('hea_camps', JSON.stringify(updated));
+        renderAdmin();
+      };
+
+      window.deleteCoach = (id) => {
+        const data = loadData();
+        const updated = data.coaches.filter(c => c.id !== id);
+        localStorage.setItem('hea_coaches', JSON.stringify(updated));
+        renderAdmin();
+      };
+
+      window.deletePhoto = (idx) => {
+        const data = loadData();
+        data.photos.splice(idx, 1);
+        localStorage.setItem('hea_photos', JSON.stringify(data.photos));
+        renderAdmin();
+      };
+    </script>
+  </body>
+</html>

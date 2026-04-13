@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Contact Human Elite Athlete (HEA) : coaching personnel et camps d’entraînement." />
+    <title>Contact — Human Elite Athlete</title>
+    <link rel="icon" href="./image hea/LOGO.webp" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="glow" aria-hidden="true"></div>
+
+    <header class="header" data-header>
+      <div class="container header__inner">
+        <a class="brand" href="./index.html" aria-label="Aller à l’accueil">
+          <img
+            class="brand__logo"
+            src="./image hea/LOGO.webp"
+            alt="Logo Human Elite Athlete"
+            width="40"
+            height="40"
+            loading="eager"
+          />
+          <span class="brand__name">Human Elite Athlete</span>
+        </a>
+
+        <button class="nav-toggle" type="button" aria-label="Ouvrir le menu" data-nav-toggle>
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+        </button>
+
+        <nav class="nav" data-nav>
+          <a class="nav__link" href="./index.html">Accueil</a>
+          <a class="nav__link" href="./football.html">Football US</a>
+          <a class="nav__link" href="./coaching.html">Coaching</a>
+          <a class="nav__link" href="./camps.html">Camps</a>
+          <a class="nav__link" href="./galerie.html">Galerie</a>
+          <a class="nav__cta" href="./contact.html" aria-current="page">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero page-hero">
+        <div class="hero__media" aria-hidden="true">
+          <img class="hero__img is-active" src="./image hea/541213899_18074637869320682_6723091946661350098_n.jpg" alt="" loading="eager" />
+          <div class="hero__overlay"></div>
+        </div>
+
+        <div class="container hero__content">
+          <div class="hero__kicker reveal">
+            <span class="pill">Contact</span>
+            <span class="pill pill--ghost">Coaching</span>
+            <span class="pill pill--ghost">Camps</span>
+          </div>
+          <h1 class="hero__title reveal">Écris-nous</h1>
+          <p class="hero__subtitle reveal">
+            Indique ton objectif (poste, niveau, coaching ou camp) et tes disponibilités. On te répond avec une
+            proposition claire.
+          </p>
+        </div>
+      </section>
+
+      <section class="section section--cta">
+        <div class="container">
+          <div class="cta reveal">
+            <div class="cta__copy">
+              <h2 class="cta__title">Human Elite Athlete</h2>
+              <p class="cta__text">
+                Coaching personnel et camps d’entraînement inspirés du football américain : intensité,
+                discipline, progression.
+              </p>
+              <div class="cta__links">
+                <a class="btn btn--primary" href="mailto:contact@hea.fr">contact@hea.fr</a>
+                <a class="btn btn--secondary" href="https://www.instagram.com/human_elite_athletes/" target="_blank" rel="noreferrer"
+                  >Instagram</a
+                >
+              </div>
+            </div>
+
+            <form class="form" autocomplete="on">
+              <div class="form__row">
+                <label class="label" for="name">Nom</label>
+                <input class="input" id="name" name="name" type="text" placeholder="Ton nom" required />
+              </div>
+              <div class="form__row">
+                <label class="label" for="email">Email</label>
+                <input class="input" id="email" name="email" type="email" placeholder="ton@email.com" required />
+              </div>
+              <div class="form__row">
+                <label class="label" for="message">Message</label>
+                <textarea
+                  class="input textarea"
+                  id="message"
+                  name="message"
+                  placeholder="Objectif, poste, niveau, dispo..."
+                  rows="4"
+                  required
+                ></textarea>
+              </div>
+              <button class="btn btn--primary btn--full" type="submit">Envoyer</button>
+              <div class="form__hint" aria-live="polite" data-form-hint></div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer__inner">
+        <div class="footer__left">
+          <img class="footer__logo" src="./image hea/LOGO.webp" alt="" width="28" height="28" loading="lazy" />
+          <div>
+            <div class="footer__brand">Human Elite Athlete</div>
+            <div class="footer__small">Coaching • Camps • Football américain</div>
+          </div>
+        </div>
+        <div class="footer__right">
+          <a class="footer__link" href="./football.html">Football US</a>
+          <a class="footer__link" href="./galerie.html">Galerie</a>
+          <a class="footer__link" href="./coaching.html">Coaching</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./script.js" defer></script>
+  </body>
+</html>
